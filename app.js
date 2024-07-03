@@ -101,6 +101,17 @@ app.use('/view_flight_forms',require('./Router/admin_flightschedule_router'))
 app.use('/add_flight',require('./Router/admin_flightschedule_router'))
 app.use('/all_schedules',require('./Router/admin_flightschedule_router'))
 
+/*simulatin related*/
+app.use('/simulation_details',require('./Router/index'))
+app.use('/add_simulation',require('./Router/index'))
+
+app.use('/simulation_details',require('./Router/flight_schedule_router'))
+app.use('/add_simulation',require('./Router/flight_schedule_router'))
+
+app.use('/simulationgraph',require('./Router/admin_dashboard_router'))
+
+app.use('/simulationgraph',require('./Router/member_dashboard_router'))
+app.use('/simulate_admin',require('./Router/admin_flightschedule_router'))
 
 /*for pilot profile*/
 app.use(express.json());

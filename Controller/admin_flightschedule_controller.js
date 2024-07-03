@@ -132,4 +132,25 @@ module.exports.alterScheduleTable=async(req,res)=>{
      console.log("query string.....");
    
    }
+
+
+
+
+   module.exports.simulate_ret_admin=async (req,res)=>{
+    try{
+      //const email = req.cookies.email;
+        // console.log(req.body)
+
+        // var simulate_ret_admin=req.body;
+        //var { name,date, start_time,end_time, description}= req.body;
+       var simulate_retr_admin= await pool.query("select * from simulation " )
+       console.log("retrieving");
+       console.log(simulate_retr_admin.rows)
+       return simulate_retr_admin.rows;
+    }
+    catch (e) {
+     console.error(e)
+     res.json(500);}
+  
+  }
        

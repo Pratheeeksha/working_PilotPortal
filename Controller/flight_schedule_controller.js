@@ -179,3 +179,34 @@ module.exports.deleteschedulesmem = async (req, res) => {
 }
 
 
+
+
+module.exports.simulate_insert=async (req,res)=>{
+  try{
+    const email = req.cookies.email;
+      console.log(req.body)
+
+      var { date, names,start_time,end_time, description}= req.body;
+     var simulate_insert= await pool.query("insert into simulation (date, names,start_time, end_time,description,email) values ($1, $2, $3, $4,$5,$6)",[ date,names, start_time,end_time, description,email])
+  }
+  catch (e) {
+   console.error(e)
+   res.json(500);}
+
+} 
+module.exports.simulate_ret=async (req,res)=>{
+  try{
+    const email = req.cookies.email;
+     // console.log(req.body)
+      //var { name,date, start_time,end_time, description}= req.body;
+     var simulate_retrieve= await pool.query("select * from simulation where email=$1",[email] )
+     console.log("retrieving");
+     console.log(simulate_retrieve.rows)
+     return simulate_retrieve.rows;
+  }
+  catch (e) {
+   console.error(e)
+   res.json(500);}
+
+}
+

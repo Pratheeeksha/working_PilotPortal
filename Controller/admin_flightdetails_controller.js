@@ -434,3 +434,105 @@ module.exports.insertdamageditems = async (req,res) => {
     console.log(err);
   }
 };
+
+
+
+
+
+
+
+/*deleting simulation*/
+
+module.exports.simulationdetails = async (req, res) => {
+  try {
+   console.log("hello welcome..................")
+    var simulation_details = await pool.query("select * from simulation");
+    console.log(simulation_details.rows);
+    console.log("hello nishmitha..................")
+    console.log(simulation_details.rows[0].flight_id+"hellonitte")
+    return simulation_details.rows;
+  }
+  catch (e) {
+    console.error(e)
+    res.json({
+      errors: 'Invalid'
+    });
+
+  }
+}
+
+
+module.exports.get_simulationdetails = async (req, res) => {
+  try {
+    var get_simulationdetails = await pool.query("select * from simulation where flight_id=$1",[req.body.flight_id]);
+    
+   
+    return get_simulationdetails.rows;
+  }
+  catch (e) {
+    console.error(e)
+    res.json({
+      errors: 'Invalid'
+    });
+
+  }
+}
+
+
+/*deleting simulation*/
+module.exports.deleteSimulation = async (flight_id) => {
+  try {
+      var result = await pool.query("DELETE FROM simulation WHERE flight_id = $1", [flight_id]);
+      console.log(result.rowCount + " row deleted");
+      return result.rowCount; 
+  } catch (err) {
+      console.error("Error deleting simulation:", err);
+      throw err; 
+};
+}
+
+
+
+/*All succesful sim details*/
+module.exports.successfulsimdetails = async (req, res) => {
+  try {
+    var successfulsim_details = await pool.query("SELECT * FROM simulation");
+    return successfulsim_details.rows;
+  } catch (e) {
+    console.error(e);
+    res.json({ errors: 'Invalid' });
+  }
+};
+
+module.exports.get_successfulsimdetails = async (req, res) => {
+  try {
+    var get_successfulsimdetails = await pool.query("SELECT * FROM simulation WHERE flight_id=$1", [req.body.flight_id]);
+    return get_successfulsimdetails.rows[0];
+  } catch (e) {
+    console.error(e);
+    res.json({ errors: 'Invalid' });
+  }
+};
+
+module.exports.edit_simulation_details = async (req, res) => {
+  try {
+    var flightinfo = req.body;
+    var edit_simulation_details = await pool.query("UPDATE simulation SET date=$1, names=$2, start_time=$3, end_time=$4, description=$5, total_minutes=$6 WHERE flight_id=$7", [flightinfo.date, flightinfo.names, flightinfo.start_time, flightinfo.end_time, flightinfo.description, flightinfo.total_minutes, flightinfo.flight_id]);
+    var after_edit = await pool.query("SELECT * FROM simulation");
+    return after_edit.rows;
+  } catch (err) {
+    console.log(err);
+    res.status(401).json('Cannot Edit flight details..........');
+  }
+};
+
+module.exports.edit_simulationdetails = async (req, res) => {
+  try {
+    var flight_id = req.body.flight_id;
+    var edit_info = await pool.query("SELECT * FROM simulation WHERE flight_id=$1", [flight_id]);
+    res.render('edit_simulation_details', { layout: false, simulation: edit_info.rows[0] });
+  } catch (e) {
+    console.error(e);
+    res.json({ errors: 'Invalid' });
+  }
+};

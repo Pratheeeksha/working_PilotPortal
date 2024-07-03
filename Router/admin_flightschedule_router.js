@@ -120,4 +120,23 @@ router.post('/update_form',async(req,res)=>{
     // res.send('hi')
 })
 
+
+
+router.post("/simulate_admin",async(req,res)=>{
+    
+    {
+    //var d=await flight_schedule_controller.simulate_insert(req,res);
+    var simulate_detail= await flightdetails.simulate_ret_admin(req,res);
+    res.render('simulation_display_admin',{layout:false,simulations:simulate_detail});
+  }
+});
+
+ router.get("/simulate_admin", async (req, res) => {
+    {
+    var simulate_detail= await flightdetails.simulate_ret_admin(req,res);
+    res.render('simulation_display_admin',{layout:false,simulations:simulate_detail});
+}
+ } );
+
+
 module.exports=router;

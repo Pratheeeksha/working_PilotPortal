@@ -137,4 +137,20 @@ module.exports.isEmailInProfileData = async (email) => {
   }
   
   
+  module.exports.simulationgraphmem= async (req, res) => {
+    try {
+      email=req.cookies.email;
+     console.log("hello welcome..................")
+      var result5= await pool.query("select names as label,sum(total_minutes) as value ,date(date) as day from simulation where email=$1 group by names,date(date)order by day ",[email]);
+      console.log(result5.rows);
+      return result5.rows;
+
+    }
+    catch (e) {
+      console.error(e)
+      res.json({
+        errors: 'Invalid'
+      });
   
+    }
+  }
