@@ -111,4 +111,19 @@ module.exports.totalsuccesfulflights= async (req, res) => {
   }
   
   
+  module.exports.simulationgraph= async (req, res) => {
+    try {
+     console.log("hello welcome..................")
+      var result5= await pool.query("select names as label,sum(total_minutes) as value from simulation group by names");
+      console.log(result5.rows);
+      return result5.rows;
+
+    }
+    catch (e) {
+      console.error(e)
+      res.json({
+        errors: 'Invalid'
+      });
   
+    }
+  }

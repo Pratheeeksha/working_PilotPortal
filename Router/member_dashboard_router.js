@@ -56,8 +56,9 @@ router.get('/member_dashboard', checkToken, async (req, res) => {
       console.log("hello nishmitha ")
 
 
-
-      res.render('dashboard', { layout: false, successful: a, crashes: b,data2: data2, data3: data3, data4:data4,trueCount,falseCount,emailExists});
+      const data5=await flightdetail.simulationgraphmem(req,res);
+      console.log(data5);
+      res.render('dashboard', { layout: false, successful: a, crashes: b,data2: data2, data3: data3, data4:data4,data5:data5,trueCount,falseCount,emailExists});
      
   } catch (err) {
     console.log(err);

@@ -240,4 +240,43 @@ router.post('/insertdamagedparts', async (req, res) => {
   });   
   
 
+
+  // Router handling the delete operation for simulation
+router.post("/all_simulationdetails", async (req, res) => {
+    var flight_id = req.body.deleteSimulation; 
+    
+    try {
+        var remove = await flightdetails.deleteSimulation(flight_id); 
+        console.log("Deleted successfully...");
+
+        var simulations = await flightdetails.simulationdetails(req, res);
+        res.render('simulation_display_admin', { layout: false, simulations: simulations });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error deleting simulation details.");
+    }
+});
+
+/*Edit simulation flight details*/
+router.post("/edit_simulationdetails", async (req, res) => {
+  try {
+    await flightdetails.edit_simulationdetails(req, res);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error editing simulation details");
+  }
+});
+
+router.post("/update_simulation_details", async (req, res) => {
+  try {
+    await flightdetails.edit_simulation_details(req, res);
+    var simulations = await flightdetails.successfulsimdetails(req, res);
+    res.render('simulation_display_admin', { layout: false, simulations: simulations });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error updating simulation details");
+  }
+});
+
+
 module.exports=router;

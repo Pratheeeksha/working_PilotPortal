@@ -75,14 +75,7 @@
             text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       
     }
-    h3{
-      font-family: 'Montserrat';
-          
-           
-          color: #5C5992;
-          text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-          margin-left:70px;
-    }
+    
     .success {
       margin-left: 250px;
       font-weight: bold;
@@ -113,8 +106,26 @@
         float: right;
         width: 150px;
     }
+   
     h1{
-      font-size: 100px;
+      font-size: 25px;
+      font-family: 'Montserrat';
+          
+           
+          color: #5C5992;
+          text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          margin-left:145px;
+    }
+
+    h3{
+      font-size: 25px;
+      font-family: 'Montserrat';
+          
+           
+          color: #5C5992;
+          text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          margin-left:75px;
+          padding-left: 180px;
     }
     .chart-container1 {
       width: 30%;
@@ -164,6 +175,19 @@
       margin-left:1150px;
       border-radius: 20px;
     }
+
+    .chart-container5 {
+      width: 30%;
+      margin-top:30px;
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-left:450px;
+      border-radius: 20px;
+      height: 350px;
+    }
 </style>
 </head>
 <body>
@@ -176,7 +200,7 @@
 
   <br>
   <div class="success">
-    <label for="successful"><h3>Successful flights of the day:</h3></label>
+    <label for="successful"><h1>Successful flights of the day:</h1></label>
     <input type="number" id="successful" name="successful" style="color:rgba(92, 89, 146, 1);" value="<%-successful%>" readonly>
     <label for="crashes"><h3>Crashes of the day:</h3></label>
     <input type="number" id="crashes" name="crashes" style="color:rgba(92, 89, 146, 1)" value="<%- crashes %>" readonly>
@@ -205,6 +229,12 @@
   <div class="card">
     <div class="chart-container4">
       <canvas id="chart4"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="chart-container5">
+      <canvas id="chart5"></canvas>
     </div>
   </div>
 
@@ -450,6 +480,69 @@ new Chart(ctx4, {
     }
   }
 });
+const data5= JSON.parse('<%- JSON.stringify(data5) %>'); // Parse the JSON data for chart1
+  
+  const labels5 = data5.map(item => item.label);
+  const values5 = data5.map(item => item.value);
+  
+  const ctx5 = document.getElementById('chart5').getContext('2d');
+  new Chart(ctx5, {
+    type: 'line',
+    data: {
+      labels: labels5,
+      datasets: [{
+       
+        data: values5,
+        backgroundColor: 'rgba(0, 255, 1, 0.1)',
+        borderColor: 'rgba(0, 255, 0, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: 'SIMULATION DETAILS',
+          font: {
+            weight: 'bold',
+            size: 20,
+            family: 'Montserrat'
+          }
+        },
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'PILOT',
+            font: {
+              weight: 'bold',
+              size: 12,
+              family: 'Montserrat'
+            }
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'TIME(minutes)',
+            font: {
+              weight: 'bold',
+              size: 12,
+              family: 'Montserrat',
+              stepSize: 50
+            }
+          },
+          beginAtZero: true          
+        }
+      }
+    }
+  });
+
+
 
 
     

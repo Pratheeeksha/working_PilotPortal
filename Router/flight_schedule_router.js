@@ -178,6 +178,32 @@ router.post("/edit_schedulemem", async (req, res) => {
    })
    
 
+   router.get('/simulation_details',async(req,res)=>{
+    res.render('simulation_display')
+  })
+  
+  router.get('/add_simulation',async(req,res)=>{
+    res.render('add_simulation_details')
+  })
+
+  router.post("/simulate",async(req,res)=>{
+    
+  {
+  var d=await flight_schedule_controller.simulate_insert(req,res);
+  var simulate_detail= await flight_schedule_controller.simulate_ret(req,res);
+  res.render('simulation_display',{layout:false,simulations:simulate_detail});
+}
+  
+  });
+
+
+  router.get("/simulate", async (req, res) => {
+    {
+    var simulate_detail= await flight_schedule_controller.simulate_ret(req,res);
+    res.render('simulation_display',{layout:false,simulations:simulate_detail});
+}
+ } );
+
 module.exports = router
 
 

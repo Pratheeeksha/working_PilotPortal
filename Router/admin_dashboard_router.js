@@ -35,9 +35,12 @@ router.get('/admin', checkToken, async (req, res) => {
       const data4 = await flightdetail.batteryusagegraph(req, res);
       console.log(data4);
 
+      const data5=await flightdetail.simulationgraph(req,res);
+      console.log(data5);
 
 
-      res.render('admin', { layout: false, successful: a, crashes: b, data1: data1, data2: data2, data3: data3,data4: data4});
+
+      res.render('admin', { layout: false, successful: a, crashes: b, data1: data1, data2: data2, data3: data3,data4: data4,data5:data5});
     } else {
       res.status(403).send("You don't have access to this field.");
     }
