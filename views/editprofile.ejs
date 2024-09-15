@@ -188,6 +188,14 @@
   .input-container input {
     margin: -4px; /* Adjust the spacing between the input fields */
   }
+
+
+
+  #imagePreview{
+    width: 30%;
+    height:30%;
+    object-fit:contain;
+  }
     </style>
     
 </head>
@@ -234,6 +242,20 @@
             <input type="date" id="dob" placeholder="DOB" value="<%= new Date(profileData.dob).toISOString().substring(0, 10) %>" name="dob" required>
         </div></div></fieldset>
 
+
+        <fieldset>
+          <div class="input-container">
+        <div class>
+          <label for="startdate"><b>Start Date:</b></label>
+          <input type="date" id="startdate" placeholder="start date" value="<%= new Date(profileData.startdate).toISOString().substring(0, 10) %>" name="startdate" required>
+      </div>
+
+    </div></fieldset>
+
+
+
+
+
         <fieldset>
             <div class="input-container">
         <div>
@@ -250,7 +272,7 @@
         
         <div>
             <label for="image">Profile Image</label>
-            <input type="file" id="image"  name="image" accept="image/*" />
+            <input type="file" id="image"  name="imagefile" accept="image/*" />
             <img src="<%= imageUrl %>" id="imagePreview" />
         </div></div></fieldset>
         

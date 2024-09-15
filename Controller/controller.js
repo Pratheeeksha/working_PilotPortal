@@ -11,11 +11,68 @@ router.use(bodyParser.json())
 router.use(cookieParser())
 const flightdetail = require("./member_dashboard_controller");
 
-
 const pool=require("../database");
 const { cookie } = require('express/lib/response');
 const { use } = require('../Router');
 require('dotenv').config();
+
+
+const ejs =require('ejs');
+const puppeteer=require('puppeteer');
+
+
+
+// module.exports.generateReport=async(req,res)=>{
+
+//  try{
+//   const browser=await puppeteer.launch();
+//   const page=await browser.newPage();
+//   await page.goto(`${req.protocol}://${req.get('host')}`+"/pdftemplate",{
+//     waitUntil:"networkidle2"
+//   });
+//  await page.setViewport({width:1680,height:1050});
+  
+//  const today=new Date();
+//  const pdfn=await page.pdf({
+//   path: `${
+//     path.join(__dirname,'../uploads/pdfs',today.getTime()+".pdf")}`,
+//     printBackground:true,
+//     format:"A4"
+    
+//  });
+
+//  await browser.close();
+//  const pdfurl=path.join(__dirname,'../uploads/pdfs',today.getTime()+".pdf")
+
+// res.set({
+//   "Content-type":"application/pdf",
+//   "Content-Length":pdfn.length
+// });
+
+// res.sendFile(pdfurl)
+
+
+//  }catch(error){
+//   console.log(error.message);
+//  }
+
+
+
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports.datahere=async(req,res)=>{
     try{
         const k=await pool.query("select * from signup");
@@ -323,17 +380,17 @@ module.exports.flying=async(req,res)=>{
 
         if(answer==='yes'){
         console.log("let's fly");
-        var{flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result}=req.body
+        var{flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result,Description}=req.body
         console.log(req.body)
         var result=true;
-        var y=await pool.query(`INSERT INTO flight_description (flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,[flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result]);
+        var y=await pool.query(`INSERT INTO flight_description (flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result,flightdescription) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,[flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result,Description]);
         console.log(y);
         res.redirect('/pilotflightdetails')
         }
         else if(answer==='no'){
-            var{flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result}=req.body
+            var{flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result,Description}=req.body
             var result=false;
-            var n=await pool.query(`INSERT INTO flight_description (flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,[flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result]);
+            var n=await pool.query(`INSERT INTO flight_description (flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result,flightdescription) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,[flight_id,emailid,copilot,duration,date,mode,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection,drone_id,result,Description]);
             console.log("Insertion Successful")
         console.log(n);
         const email=req.cookies.email
@@ -345,6 +402,10 @@ module.exports.flying=async(req,res)=>{
         else{
             res.status(400).send("Invalid answer'")
         }
+
+
+
+
     }
     catch(err){
         console.log(err)
@@ -355,8 +416,8 @@ module.exports.profile=async(req,res)=>{
   try{
     const email=req.cookies.email;
     console.log(req.body);
-    var{name,emailid,mobile_no,dob,type_of_drone_experience,honors_and_achievements}=req.body;
-    var profile_insert=await pool.query(`Insert into profile_data(name,emailid,mobileno,dob,drone_experience,honours_achievements)VALUES ($1,$2,$3,$4,$5,$6)`,[name,emailid,mobile_no,dob,type_of_drone_experience,honors_and_achievements]);
+    var{name,emailid,mobile_no,dob,startdate,type_of_drone_experience,honors_and_achievements}=req.body;
+    var profile_insert=await pool.query(`Insert into profile_data(name,emailid,mobileno,dob,drone_experience,honours_achievements,startdate)VALUES ($1,$2,$3,$4,$5,$6,$7)`,[name,emailid,mobile_no,dob,type_of_drone_experience,honors_and_achievements,startdate]);
     
   }
   catch(e){
@@ -401,19 +462,20 @@ module.exports.profile=async(req,res)=>{
 
 module.exports.updateProfile = async (req, res) => {
   try {
+    console.log("started updating")
     const email = req.cookies.email;
     console.log("Email check here at updateprofile");
     console.log(req.body.email);
     console.log("Email check here at updateprofile");
 
-    const { name, emailid, mobile_no, dob, type_of_drone_experience, honors_and_achievements } = req.body;
+    const { name, emailid, mobile_no, dob,startdate , type_of_drone_experience, honors_and_achievements} = req.body;
 
     
     if (email !== emailid) {
       return res.status(400).json({ message: 'Email mismatch' });
     }
     const emailIdString = String(emailid);
-
+console.log("testing");
     // Log the values for debugging
     console.log({
       name,
@@ -422,6 +484,7 @@ module.exports.updateProfile = async (req, res) => {
       type_of_drone_experience,
       honors_and_achievements,
       emailid: emailIdString,
+      startdate
     });
     const updateQuery = `
       UPDATE profile_data
@@ -429,11 +492,12 @@ module.exports.updateProfile = async (req, res) => {
           mobileno = $2,
           dob = $3,
           drone_experience = $4,
-          honours_achievements = $5
-      WHERE emailid = $6
+          honours_achievements = $5,
+          startdate=$6
+      WHERE emailid = $7
     `;
 
-    const values = [name, mobile_no, dob, type_of_drone_experience, honors_and_achievements,emailid];
+    const values = [name, mobile_no, dob, type_of_drone_experience, honors_and_achievements,startdate,emailid];
 
     const result = await pool.query(updateQuery, values);
 
@@ -578,17 +642,7 @@ module.exports.droneslistdata=async(req,res)=>{
         const userId = uuid.v4()
         res.cookie('autoid',userId);
         res.render('flying',{options:list,email:email,userId:userId,batteries:batteries,direction:winddirection,emailExists})
-        /*function generateShortId() {
-            const timestamp = Date.now().toString(36); // Convert current timestamp to base36 string
-            const randomNumber = Math.floor(Math.random() * 10000).toString(36); // Generate random number and convert to base36 string
-            const id = timestamp + randomNumber; // Combine timestamp and random number
-            return id;
-          }
-          
-          // Usage
-          const userId = generateShortId();
-          console.log(userId);
-          */
+      
           
     }
     catch(err){
@@ -893,6 +947,104 @@ module.exports.insertdamagedparts = async (req,res) => {
 };
 
 
+
+module.exports.reportDetails=async(req,res)=>{
+try{
+ const email=req.cookies.email;
+ console.log(email);
+
+
+
+ const flightResult = await pool.query(
+  `SELECT date, copilot, duration, batteryid, takeoffvoltage, landingvoltage, windspeed, winddirection , flightdescription
+   FROM Flight_description 
+   WHERE emailid = $1`,
+  [email]
+);
+
+const profile_data=await pool.query(
+  `SELECT * FROM profile_data  WHERE emailid = $1`,
+  [email]
+)
+
+
+
+
+
+let tabledetails , maindetails = [];
+if (flightResult.rows.length > 0 || profile_data.rows.length > 0){
+  tabledetails = flightResult.rows;
+  maindetails=profile_data.rows;
+  console.log(tabledetails);
+  console.log(maindetails);
+}
+
+
+
+
+
+
+
+
+
+  // pool.query(`SELECT date,copilot,duration,batteryid,takeoffvoltage,landingvoltage,windspeed,winddirection FROM Flight_description WHERE emailid=$1 `, [email], (err, result) => {
+  //   if (err) {
+  //     throw err;
+  //   }
+  //   else {
+  //     if (result.rows.length > 0) {
+  //       const tabledetails = result.rows;
+  //       console.log(tabledetails);
+  //     } else {
+  //       tabledetails = [];
+  //     }
+  //   }
+  // });
+
+
+// var main_data=await pool.query(`SELECT name,emailid,mobileno,total_flight_hours,total_simulation_time FROM profile_data emailid=$1 `,[email])
+// const main_datas=main_data.rows;
+// console.log(main_datas);
+
+
+
+return {tabledetails, maindetails};
+
+}
+catch(e){
+  console.log("error::",e)
+}
+
+
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //succesful flights
 module.exports.flightdetails = async (req, res) => {
   try {
@@ -979,7 +1131,9 @@ module.exports.flightdetails = async (req, res) => {
 
     console.log(query4);
     const crashDetails = query4.rows;
+    if(crashDetails[0].drone_id){
     const droneId = crashDetails[0].drone_id;
+    };
 
     const crashdetails = await pool.query(`
       	
@@ -1020,6 +1174,46 @@ WHERE
     const items_name=(await pool.query('select items_name from cost_details')).rows;
 
     const crashdetailsrows = crashdetails.rows;
+    let totalsum = 0;
+
+if (crashdetailsrows.length > 0) {
+    crashdetailsrows.forEach(row => {
+      console.log("Row:", row);
+      console.log("Rowtotal:", row.total_cost);
+        if (row.total_cost) {
+            totalsum += Number(row.total_cost);
+            console.log("Updated totalsum:", totalsum);
+        }
+    });
+}
+console.log("totalsum:", totalsum);
+
+
+let totaldur=0;
+
+const dur=await pool.query(`select duration from flight_description WHERE emailid = $1`,
+  [email])
+const durationrow=dur.rows;
+
+
+if (durationrow && durationrow.length > 0) {
+  durationrow.forEach(row => {
+    console.log("Row:", row);
+    
+      if (row && row.duration ) {
+          totaldur+=Number(row.duration);
+          console.log("Updated totalsum:", totaldur);
+      }
+  });
+}
+
+
+
+
+
+
+
+
     console.log("hello this is crash details...........")
     console.log(crashdetailsrows);
     console.log("hello this is crash details...........")
@@ -1032,11 +1226,11 @@ WHERE
     console.log("items_name in controller........")
     
 
-    return { totalDuration, results, crashDetails, crashdetailsrows, trueCount, falseCount, itemcost,flighttime ,items_name};
+    return { totalDuration, results, crashDetails, crashdetailsrows, trueCount, falseCount, itemcost,flighttime ,items_name,totalsum,totaldur};
   } catch (err) {
     console.log('In controller catch..............')
     console.log(err);
-    return { totalDuration: 0, results: [], query4: [], crashdetails: [], trueCount: 0, falseCount: 0, itemcost: [] ,flighttime:[]};
+    return { totalDuration: 0, results: [], query4: [], crashdetails: [], trueCount: 0, falseCount: 0, itemcost: [] ,flighttime:[],totalsum:0,totaldur:0};
   }
 };
 

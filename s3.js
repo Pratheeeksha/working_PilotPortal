@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 //import dotenv from 'dotenv'
 require('dotenv').config();
 const region="eu-north-1"
-const bucketName="pilot-profile"
+const bucketName=process.env.BUCKETNAME;
 const accessKeyId=process.env.AWS_ACCESS_KEYID;
 const secretAccessKey=process.env.AWS_SECRET_ACCESS_KEY;
 const crypto=require('crypto');

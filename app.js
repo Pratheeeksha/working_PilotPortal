@@ -7,7 +7,7 @@ const dotenv = require("dotenv");
 const aws = require('aws-sdk');
 const controller=require("./Controller/controller");
 require('dotenv').config();
-
+const {sending}=require("./Controller/mail")
 // import { promisify } from 'util';
 // import { generateUploadURL } from 's3.js';
 
@@ -25,6 +25,34 @@ var jobcron = cron.schedule(cronSchedule, async () => {
     console.error(error);
   }
 });
+
+
+// cron to generate,mail the report to admin and pilots every 15 days
+var reportMail = cron.schedule('0 0 1,16 * *', async () => {
+  
+  try {
+    console.log('Running the scheduled task to send reports every 15 days');
+    await module.exports.sending();  // Assuming 'sending' is an async function
+  } catch (error) {
+    console.error('Error during the scheduled task:', error);
+  }
+
+}, {
+  scheduled: true,
+  timezone: "Asia/Kolkata"  
+  
+});
+
+
+
+
+
+
+
+
+
+
+
 const s3 = new aws.S3({
   accessKeyId:process.env.AWS_ACCESS_KEYID,
   secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
@@ -119,6 +147,16 @@ app.use(express.json());
 // const Images = mongoose.model('Images');
 //const signup=require('./Router/index')
 
+//download route
+app.use('/', require('./Router/index'));
+
+app.use('/downloadpdf', require('./Router/index'));
+app.use('/pdftemplate', require('./Router/index'));
+
+app.use('/downloadtemplate',require('./Router/index'));
+
+//mailing route
+app.use('/mailing', require('./Router/index'))
 
 
 //app.use(signup)
