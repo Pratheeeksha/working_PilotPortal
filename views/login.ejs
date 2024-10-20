@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!--done but below lil bit space needed -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,10 +18,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
 
-    <style>
+     <!-- <style>
         body {
-            background-color:#f0f0f0;;
+            background-color:#f0f0f0;
+
+        
+
         }
+
+
+
+        //extra
+
         .topspace{
           margin-top: 5%;
         }
@@ -31,7 +39,7 @@
             text-align: center;
         }
 
-    
+   
        
 
         label {
@@ -105,10 +113,13 @@
             color: white;
             border: 1px solid white;
         }
+
+/* 
         .form-container {
   position: relative;
-  height: 100%; /* Set the desired height of the form container */
-}
+  height: 100%; 
+  
+} */
 
 .form1,
 .form2 {
@@ -220,6 +231,17 @@
   background-position: center;
 }
 
+
+
+@media  only screen and (max-width:600px) {
+
+
+
+
+  
+}
+
+
     </style>
 </head>
 <body>
@@ -229,7 +251,7 @@
         <div class="pilotportal">
            PILOT PORTAL 
         </div>
-        <div>
+        <div> 
        
             <input type="email" id="emailid" name="emailid" placeholder="Emailid"  required>
         </div>
@@ -241,6 +263,9 @@
           <center><button class='signin' type="submit">SIGN IN</button></center>  
         
     </form>
+
+
+
     <form class="form2" action="/signup">
         <div class="hellopilot">
             Hello, Pilot!
@@ -253,6 +278,224 @@
             <center><button class="signup" type="submit">SIGN UP</button></center>
  
         
-    </form></div>
+    </form>
+  </div>
 </body>
-</html>
+</html> 
+ -->
+
+
+
+<style> 
+  body {
+    background-color: #f0f0f0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 0px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 900px;
+    height: 400px;
+  }
+
+  .form1, .form2 {
+   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .form1 {
+    background-color: #fff;
+    width: 60%;
+    height: 100%;
+    padding: 20px;
+  }
+
+  .form2 {
+
+    background-color: #5C5992;
+    width: 40%;
+    color: white;
+   
+    padding:20px;
+    height:100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .pilotportal {
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 37px;
+    color: #5C5992;
+    margin-bottom: 20px;
+  }
+
+  input {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: rgba(217, 217, 217, 0.17);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 14px;
+  }
+
+  .signin, .signup {
+    padding: 10px 20px;
+    background-color: #5C5992;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    width: 150px;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .signup {
+    /* background-color: white;
+    color: #5C5992;
+    border: 3px solid #F5F5F5; */
+      
+      background-color:#5C5992;
+      color: white;
+      border: none;
+      text-align: center;
+      cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    
+           
+    box-sizing: border-box;
+    width: 150px;
+    
+     
+      border: 3px solid #F5F5F5;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 50px;
+      display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+  }
+  .signin{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+
+  .signup:hover, .signin:hover {
+    background-color: #494685;
+  }
+
+  .hellopilot {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .paragraph p {
+    font-size: 12px;
+    color: #fff;
+    line-height: 1.5;
+    margin: 10px 0;
+  }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+    background-image: url(https://i.imgur.com/IJE2bD6.png);
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 20px;
+  }
+
+
+
+
+  @media only screen and (max-width: 600px) {
+
+
+
+    .form-container {
+      flex-direction: column; /* Stack forms vertically */
+      align-items: center;
+      width: 80%;
+      height: 90%;
+    }
+
+    .form1, .form2 {
+      width: 100%;
+      margin: 0;
+    }
+
+   
+  }
+
+
+  @media only screen and (min-width: 601px) and (max-width:900px) {
+
+    .form-container {
+      flex-direction: column; /* Stack forms vertically */
+      align-items: center;
+      width: 80%;
+      height: 90%;
+    }
+
+    .form1, .form2 {
+      width: 100%;
+      margin: 0;
+    }
+
+    
+  
+
+
+
+}
+
+
+
+</style>
+</head>
+<body>
+<div class="form-container">
+  <form class="form1" action="/login" method="POST">
+    <div class="logo"></div>
+    <div class="pilotportal">PILOT PORTAL</div>
+    <input type="email" id="emailid" name="emailid" placeholder="Email" required>
+    <input type="password" id="password" name="password" placeholder="Password" required>
+    <button class="signin" type="submit">SIGN IN</button>
+  </form>
+
+  <form class="form2" action="/signup">
+    <div class="hellopilot">Hello, Pilot!</div>
+    <div class="paragraph">
+      <p>Enter your personal details and start your journey with us.</p>
+    </div>
+    <button class="signup" type="submit">sign up</button>
+  </form>
+</div>
+</body>
+</html> 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>  <!--done but below lil bit space needed -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
   </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    <style>
+    <!-- <style>
         body {
             background-color: #f0f0f0;
         }
@@ -243,4 +243,237 @@
         </form>
     </div>
 </body>
-</html>
+</html> -->
+
+
+ <style>
+    
+    body {
+        background-color: #f0f0f0;
+        font-family: 'Montserrat', Arial, sans-serif;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        background-color: #fff;
+        padding: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        width: 900px;
+        height: 400px;
+        
+    }
+
+    .form1, .form2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        
+    }
+
+    .form1 {
+        background-color: #fff;
+        width: 60%;
+        height: 100%;
+        padding: 20px;
+    }
+
+    .form2 {
+        background-color: #5C5992;
+        width: 40%;
+        color: white;
+        padding: 20px;
+        height: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .pilotportal {
+        font-weight: 700;
+        font-size: 30px;
+        line-height: 37px;
+        color: #5C5992;
+        margin-bottom: 20px;
+    }
+
+    input {
+        width: 100%;
+        padding: 15px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: rgba(217, 217, 217, 0.17);
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        font-size: 14px;
+    }
+
+    .signin, .signup {
+        padding: 10px 20px;
+        background-color: #5C5992;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        width: 150px;
+        cursor: pointer;
+        margin-top: 20px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        
+    }
+
+    .signin{
+        background-color:#5C5992;
+      color: white;
+      border: none;
+      text-align: center;
+      cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    
+           
+    box-sizing: border-box;
+    width: 150px;
+    
+     
+      border: 3px solid #F5F5F5;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 50px;
+      display: flex;
+  justify-content: center;
+  align-items: center;
+
+  }
+  .signup{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+
+
+
+    .signup:hover, .signin:hover {
+        background-color: #494685;
+    }
+
+    .hellopilot {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .paragraph p {
+        font-size: 12px;
+        color: #fff;
+        line-height: 1.5;
+        margin: 10px 0;
+    }
+
+    .logo {
+        width: 70px;
+        height: 70px;
+        background-image: url('https://i.imgur.com/gj6MjHB.png');
+        background-size: cover;
+        background-position: center;
+        margin-bottom: 20px;
+    }
+
+   
+    @media only screen and (max-width: 600px) {
+
+      
+
+
+        .form-container {
+            flex-direction: column; 
+            align-items: center;
+            width: 80%;
+            height: 90%;
+       
+           
+        }
+        
+
+        .form1, .form2 {
+            width: 100%;
+            margin: 0;
+        }
+
+       
+    }
+
+    @media only screen and (min-width:601px) and (max-width:900px)  {
+
+body {
+background-color: #f0f0f0;
+font-family: 'Montserrat', Arial, sans-serif;
+margin: 0;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+
+.form-container {
+    flex-direction: column; 
+    align-items: center;
+    width: 80%;
+    height: 90%;
+    
+    
+}
+
+
+.form1, .form2 {
+    width: 100%;
+    margin: 0;
+}
+
+
+}
+
+
+
+
+
+</style>
+</head>
+ <body>
+<div class="form-container">
+    
+    <form class="form2" action="/login">
+        <div class="logo"></div>
+        <div class="hellopilot">WELCOME BACK!</div>
+        <div class="paragraph">
+            <p>In order to access and view your pilot profile, kindly proceed with the login process</p>
+        </div>
+        <button class="signin" type="submit">SIGN IN</button>
+    </form> 
+
+
+
+
+
+    <form class="form1" action="/signup" method="POST">
+        <div class="pilotportal">Create Account</div>
+        <input type="text" placeholder="Name" name="name" id="name" required>
+        <input type="email" placeholder="Email Id" name="emailid" id="emailid" required>  
+        <input type="tel" placeholder="Mobile Number" name="phone_number" id="phone_number" required>
+        <input type="password" placeholder="Password" name="password" id="password" required> 
+        <input type="password" placeholder="Confirm Password" name="cpassword" id="cpassword" required>
+        <button class='signup' type="submit">SIGN UP</button>
+    </form>
+
+</div>
+</body> 
+</html> 
