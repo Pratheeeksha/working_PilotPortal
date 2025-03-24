@@ -639,7 +639,7 @@ module.exports.droneslistdata=async(req,res)=>{
         console.log(list)
         const email=req.cookies.email
         console.log(email);
-        const userId = uuid.v4()
+        const userId = uuid.v4()  //uniquic id generation 
         res.cookie('autoid',userId);
         res.render('flying',{options:list,email:email,userId:userId,batteries:batteries,direction:winddirection,emailExists})
       

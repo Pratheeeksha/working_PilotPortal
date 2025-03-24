@@ -47,26 +47,25 @@ var reportMail = cron.schedule('0 0 1,16 * *', async () => {
 
 
 
+app.use(express.json())
 
 
+// this i have commented . just uncomment it 
 
-
-
-
-const s3 = new aws.S3({
-  accessKeyId:process.env.AWS_ACCESS_KEYID,
-  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
-  region:process.env.AWS_REGION
-});
-s3.listBuckets((err, data) => {
-  if (err) {
-    console.error('Error connecting to S3:', err);
-  } else {
-    console.log("check after using env variable");
-    console.log('Connection established with S3');
-    console.log('Buckets:', data.Buckets);
-  }
-});
+// const s3 = new aws.S3({
+//   accessKeyId:process.env.AWS_ACCESS_KEYID,
+//   secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
+//   region:process.env.AWS_REGION
+// });
+// s3.listBuckets((err, data) => {
+//   if (err) {
+//     console.error('Error connecting to S3:', err);
+//   } else {
+//     console.log("check after using env variable");
+//     console.log('Connection established with S3');
+//     console.log('Buckets:', data.Buckets);
+//   }
+// });
 
 
 //app.use(signup)
@@ -196,6 +195,7 @@ require('dotenv/config');
 
 
     app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 //bodyparser
 app.use(bodyparser.urlencoded({extended : false}));
 app.use(bodyparser.json());
@@ -227,8 +227,13 @@ app.use(bodyparser.json());
             }
         });
     });
+
     const pool=require("./database");
-    const controller2=require("./s3");
+
+
+    //commented this 
+    //const controller2=require("./s3");
+
     app.get('/all_pilots', async (req, res) => {
       try {
         console.log("Enteredd all_pilotss");
@@ -345,9 +350,9 @@ app.get('/delete', (req, res) => {
         if (deleteResult.rowCount === 0) {
             return res.status(404).json({ message: 'Profile not found' });
         }
-
-        await controller2.deleteImage(username);
-        //res.status(200).json({ message: 'Image deleted successfully from S3' });
+        //commented this 
+        //await controller2.deleteImage(username);
+        
         res.redirect('/all_pilots');
     } catch (error) {
         console.error('Error deleting image:', error);
@@ -428,7 +433,9 @@ app.get('/edit/:emailid', async (req, res) => {
   if (!profileData) {
     return res.status(404).send('Profile not found');
   }
-    const imageUrl = await controller2.generateDownloadURL(username); 
+
+  // commented this
+    // const imageUrl = await controller2.generateDownloadURL(username); 
     console.log("get edit profile GEPGEPGEPGEPGEPGEP");
     console.log("Profile Data:", profileData);
     console.log("Image URL:", imageUrl);
@@ -436,7 +443,8 @@ app.get('/edit/:emailid', async (req, res) => {
     console.log(profileData.dob);
     console.log("DATEDATEADTE");
     console.log("get edit profile GEPGEPGEPGEPGEPGEP");
-    res.render('updatedoc.ejs', { layout: false,profileData, imageUrl});
+    // res.render('updatedoc.ejs', { layout: false,profileData, imageUrl}); commented
+ res.render('updatedoc.ejs', { layout: false,profileData});
 
 
     
@@ -468,7 +476,7 @@ app.post('/edit/:emailid',upload.single('image'), async (req, res) => {
     console.log("Checckingg file");
     console.log(req.file);
     console.log("Checckingg file");
-    const url = await controller2.generateUploadURL(username);
+    //const url = await controller2.generateUploadURL(username); commented
     const file = req.file.buffer;
     const mimeType = req.file.mimetype;
 

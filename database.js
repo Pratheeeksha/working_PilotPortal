@@ -31,8 +31,21 @@
 
 
 
-const { Pool } = require("pg");
-const config = "postgres://qfxwijux:sGtZVyXqp9PIG1EaLpZNdZX9qO1RceyE@mouse.db.elephantsql.com/qfxwijux";
-const pool = new Pool({ connectionString: config, ssl: { rejectUnauthorized: false } });
-module.exports = pool;
 
+// const { Pool } = require("pg");
+// const config = "postgres://qfxwijux:sGtZVyXqp9PIG1EaLpZNdZX9qO1RceyE@mouse.db.elephantsql.com/qfxwijux";
+// const pool = new Pool({ connectionString: config, ssl: { rejectUnauthorized: false } });
+// module.exports = pool;
+
+const { Pool } = require("pg");
+
+const config = {
+  connectionString: "postgresql://neondb_owner:npg_Ir3pyohAHJO8@ep-flat-pond-a1qfpn19-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require",
+  ssl: {
+    rejectUnauthorized: false,
+  },
+};
+
+const pool = new Pool(config);
+
+module.exports = pool;

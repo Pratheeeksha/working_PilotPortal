@@ -15,9 +15,7 @@ module.exports.totalsuccesfulflights= async (mail) => {
     }
     catch (e) {
       console.error(e)
-    //   res.json({
-    //     errors: 'Invalid'
-    //   });
+    
   
     }
   }
@@ -50,9 +48,7 @@ module.exports.isEmailInProfileData = async (email) => {
     }
     catch (e) {
       console.error(e)
-    //   res.json({
-    //     errors: 'Invalid'
-    //   });
+
   
     }
   }

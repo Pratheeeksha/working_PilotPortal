@@ -105,7 +105,7 @@ module.exports.isEmailInProfileData = async (email) => {
   module.exports.damageditemsgraph= async (req, res) => {
     try {
       email=req.cookies.email;
-     console.log("hello welcome..................")
+     console.log("hello welcome..................")//below they have used 2 joins together
      var result3 = await pool.query('SELECT fci.items_name as label, SUM(cd.items_cost) AS value FROM flight_crash_items fci JOIN flight_description fd ON fci.flight_id = fd.flight_id JOIN cost_details cd ON fci.items_name = cd.items_name WHERE fd.emailid =$1 GROUP BY fci.items_name',[email]);
       return result3.rows;
       

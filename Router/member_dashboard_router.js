@@ -10,10 +10,12 @@ const pool=require("../database");
 
 
 
-
 router.get('/member_dashboard', checkToken, async (req, res) => {
   try {
-    const { email } = req.user; // Get the email from the decoded token
+    const { email } = req.user; 
+    
+    // Get the email from the decoded token
+    
     console.log("Email check email check in member_dashboard");
     console.log(email);
     console.log("Email check email check in member_dashboard");
@@ -21,7 +23,7 @@ router.get('/member_dashboard', checkToken, async (req, res) => {
     console.log("checking email exists");
     console.log(emailExists);
     console.log("checking email exists");
-    // Check if the email matches the admin credentials
+   // Check if the email matches the admin credentials
    
       const a = await flightdetail.totalsuccesfulflights(req, res);
       const b = await flightdetail.totalcrashes(req, res);
@@ -30,7 +32,8 @@ router.get('/member_dashboard', checkToken, async (req, res) => {
       console.log(b);
       console.log("Total number of successful flights and crashes....");
 
-      var {trueCount,falseCount}= await flightdetail.successfulflightgraph(req, res);
+      var {trueCount,falseCount}= await flightdetail.successfulflightgraph(req, res); 
+      //this again gives the sucess and crash count
       console.log("Successful graph............... ");
       console.log(trueCount);
       console.log(falseCount)
@@ -65,23 +68,37 @@ router.get('/member_dashboard', checkToken, async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+// function checkToken(req, res, next) {
+//   const authcookie = req.cookies.authcookie;
+//   const email = req.cookies.email;
+//   console.log(email);
+//   console.log(authcookie);
+
+//   jwt.verify(authcookie, "sfhsfhsfhfsiofhiosghiogjiogjdoghfioghioghfodiofghdfiogh", (err, data) => {
+//     if (err) {
+//       res.sendStatus(403);
+//     } else {
+//       const decodedEmail = data.emailid.trim(); // Trim whitespace from the decoded email
+//       req.user = { email: decodedEmail }; // Set the decoded email in the req.user object
+//       next();
+//     }
+//   });
+// }
+
 function checkToken(req, res, next) {
   const authcookie = req.cookies.authcookie;
-  const email = req.cookies.email;
-  console.log(email);
-  console.log(authcookie);
+  if (!authcookie) {
+      return res.sendStatus(403); // ✅ Return to prevent further execution
+  }
 
   jwt.verify(authcookie, "sfhsfhsfhfsiofhiosghiogjiogjdoghfioghioghfodiofghdfiogh", (err, data) => {
-    if (err) {
-      res.sendStatus(403);
-    } else {
-      const decodedEmail = data.emailid.trim(); // Trim whitespace from the decoded email
-      req.user = { email: decodedEmail }; // Set the decoded email in the req.user object
+      if (err) {
+          return res.sendStatus(403); // ✅ Return after sending a response
+      }
+      req.user = { email: data.emailid.trim() };
       next();
-    }
   });
 }
-
 
 
 module.exports=router;

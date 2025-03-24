@@ -196,8 +196,9 @@ router.get('/insertnewprofile', async (req, res) => {
 
     const email = req.cookies.email;
     const emailExists = await flightdetail.isEmailInProfileData(email);
-    const { url } = await controller2.generateUploadURL();
-    res.render('insertnewprofile', { url, email, emailExists });
+   // const { url } = await controller2.generateUploadURL(); commented
+    // res.render('insertnewprofile', { url, email, emailExists }); commented n modified 
+    res.render('insertnewprofile', {  email, emailExists });
   } catch (err) {
     console.error('An error occurred:', err);
     res.status(500).send('An error occurred');
@@ -212,48 +213,49 @@ const fetch = require('node-fetch');
 const AWS = require('aws-sdk');
 const { error, Console } = require('console');
 const s3 = new AWS.S3();
+// router.post('/insertnewprofile', upload.single('image'), async (req, res) => {
+//   try { commented and modified below
 
-
-router.post('/insertnewprofile', upload.single('image'), async (req, res) => {
+router.post('/insertnewprofile', async (req, res) => {
   try {
     const emailid = req.body.emailid;
     //const originalname=req.file.originalname;
-    const username = emailid.split('@')[0];
-    console.log("only the username of email is is " + username);
-    const url = await controller2.generateUploadURL(username);
-    console.log("Generate upload url" + url);
-    const file = req.file.buffer;
+   // const username = emailid.split('@')[0];
+   // console.log("only the username of email is is " + username);
+   //const url = await controller2.generateUploadURL(username); commented
+    //console.log("Generate upload url" + url);
+    //const file = req.file.buffer;
 
     console.log("file received");
     console.log(req.body);
-    const originalname = req.file.originalname;
-    console.log(req.file.originalname);
+   // const originalname = req.file.originalname; commented
+    //console.log(req.file.originalname);
     //console.log(file);
     console.log("file received");
-    console.log(file);
-    console.log(req.file.mimetype);
+   // console.log(file);
+    //console.log(req.file.mimetype);
     console.log("print print ");
 
-    // const fileBuffer = req.file.buffer;
-    //const contentType = req.file.mimetype;
+    
 
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "multipart/form-data"
-      },
-      body: file
-    });
-    if (response.ok) {
-      console.log('Image uploaded to S3');
-      // req.session.originalname = originalname;
-      // console.log('Original name stored in session:', req.session.originalname);
-    } else {
+    // const response = await fetch(url, { commented
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "multipart/form-data"
+    //   },
+    //   body: file
+    // });
+    // if (response.ok) {
+    //   console.log('Image uploaded to S3');
+     
+    // } else {
 
-      const errorInText = await response.text();
-      console.error('Failed to upload image to S3:', errorInText);
-      return;
-    }
+    //   const errorInText = await response.text();
+    //   console.error('Failed to upload image to S3:', errorInText);
+    //   return;
+    // }
+    console.log("Received Data:", req.body);
+
     const j = await controller.profile(req, res);
     console.log(j);
 
@@ -268,7 +270,7 @@ router.post('/insertnewprofile', upload.single('image'), async (req, res) => {
 router.get('/profile', async (req, res) => {
   try {
     const email = req.cookies.email;
-    const username = email.split('@')[0];
+    //const username = email.split('@')[0];
     const emailExists = await flightdetail.isEmailInProfileData(email);
 
     const result = await pool.query(`SELECT * FROM profile_data WHERE emailid = $1`, [email]);
@@ -297,16 +299,15 @@ router.get('/profile', async (req, res) => {
     // const totalHours = Math.floor(totalDurationInSeconds / 3600);
     // const totalMinutes = Math.floor((totalDurationInSeconds % 3600) / 60);
     // const totalSeconds = totalDurationInSeconds % 60;
-    const imageUrl = await controller2.generateDownloadURL(username);
+   // const imageUrl = await controller2.generateDownloadURL(username); commented
     console.log("pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp");
     console.log("Profile Data:check check ", profileData);
-    console.log("Image URL:", imageUrl);
-    // console.log("Total Duration (Hours):", totalHours);
-    //   console.log("Total Duration (Minutes):", totalMinutes);
-    //   console.log("Total Duration (Seconds):", totalSeconds);
+   // console.log("Image URL:", imageUrl); commented
+   
     console.log("pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp");
-    //console.log(req.file.originalname);
-    res.render('profile.ejs', { profileData, imageUrl, totalDurationInSeconds, sim_totalDurationInMinutes, emailExists });
+    
+    // res.render('profile.ejs', { profileData, imageUrl, totalDurationInSeconds, sim_totalDurationInMinutes, emailExists }); commented n modified to blw
+    res.render('profile.ejs', { profileData,  totalDurationInSeconds, sim_totalDurationInMinutes, emailExists });
   } catch (error) {
     console.error('Error retrieving object URL from S3:', error);
     res.status(500).send('Failed to retrieve image URL from S3');
@@ -442,8 +443,6 @@ router.get('/pdftemplate', checkToken1, async (req, res) => {//here pdf generati
   try {
     const { email } = req.user; // Get the email from the decoded token
    
-
-
     const username = email.split('@')[0];
     const imageurl = await controller2.generateDownloadURL(username);
 
