@@ -37,10 +37,16 @@
 // const pool = new Pool({ connectionString: config, ssl: { rejectUnauthorized: false } });
 // module.exports = pool;
 
+// const { Pool } = require("pg");
+
+
+
+
+require("dotenv").config();
 const { Pool } = require("pg");
 
 const config = {
-  connectionString: "postgresql://neondb_owner:npg_Ir3pyohAHJO8@ep-flat-pond-a1qfpn19-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require",
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
