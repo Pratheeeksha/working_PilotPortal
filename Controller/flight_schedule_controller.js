@@ -19,9 +19,6 @@ const { use } = require('../Router');
 require('dotenv').config();
 
 
-
-
-
 module.exports.flight_schedule_insertmem=async (req,res)=>{
   try{
     const email = req.cookies.email;
@@ -181,19 +178,79 @@ module.exports.deleteschedulesmem = async (req, res) => {
 
 
 
-module.exports.simulate_insert=async (req,res)=>{
-  try{
+// module.exports.simulate_insert=async (req,res)=>{
+//   try{
+//     const email = req.cookies.email;
+//       console.log(req.body)
+
+//       var { date, names,start_time,end_time, description}= req.body;
+
+//      var simulate_insert= await pool.query("insert into simulation (date, names,start_time, end_time,description,email) values ($1, $2, $3, $4,$5,$6)",[ date,names, start_time,end_time, description,email])
+//   }
+//   catch (e) {
+//    console.error(e)
+//    res.json(500);}
+
+// } 
+
+
+
+module.exports.simulate_insert = async (req, res) => {
+  try {
     const email = req.cookies.email;
-      console.log(req.body)
+    console.log(req.body);
 
-      var { date, names,start_time,end_time, description}= req.body;
-     var simulate_insert= await pool.query("insert into simulation (date, names,start_time, end_time,description,email) values ($1, $2, $3, $4,$5,$6)",[ date,names, start_time,end_time, description,email])
+    var { date, names, start_time, end_time, description } = req.body;
+
+    // Convert start_time and end_time to Date objects for calculation
+    const start = new Date(`1970-01-01T${start_time}`);
+    const end = new Date(`1970-01-01T${end_time}`);
+
+    // Validate times
+    if (isNaN(start) || isNaN(end) || end <= start) {
+      return res.status(400).json({ error: "Invalid start or end time" });
+    }
+
+    // Calculate duration in minutes
+    const total_minutes = Math.floor((end - start) / (1000 * 60));
+
+    // Insert into the database
+    var simulate_insert = await pool.query(
+      "INSERT INTO simulation (date, names, start_time, end_time, description, email, total_minutes) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      [date, names, start_time, end_time, description, email, total_minutes]
+    );
+    
+
+    //res.status(200).json({ message: "Simulation inserted successfully" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Internal server error" });
   }
-  catch (e) {
-   console.error(e)
-   res.json(500);}
+};
 
-} 
+
+module.exports.name_time = async (req, res) => {
+  try {
+    const email = req.cookies.email;
+
+    // Fetch name from the database
+    const result = await pool.query(`SELECT name FROM profile_data WHERE emailid=$1`, [email]);
+    const name = result.rows.length > 0 ? result.rows[0].name : "create profile to get the name";
+
+    // Fetch total simulation time
+    const time = await pool.query(`SELECT SUM(total_minutes) AS total_time FROM simulation WHERE email = $1`, [email]);
+    const totalMinutes = time.rows[0].total_time || 0;
+
+    // Send the response
+    return { name, totalMinutes };
+  } catch (error) {
+    console.error("Error fetching name and time:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+
 module.exports.simulate_ret=async (req,res)=>{
   try{
     const email = req.cookies.email;

@@ -4,7 +4,7 @@ const flight_schedule_controller= require("../Controller/flight_schedule_control
 const  Router  = require("express");
 const jwt=require("jsonwebtoken");
 const session = require('express-session');
-
+const pool =require('../database.js');
 // const app=express();
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser')
@@ -183,7 +183,11 @@ router.post("/edit_schedulemem", async (req, res) => {
   })
   
   router.get('/add_simulation',async(req,res)=>{
-    res.render('add_simulation_details')
+    console.log("cookies are:",req.cookies);
+
+    const {name} = await flight_schedule_controller.name_time(req,res);
+    
+    res.render('add_simulation_details',{email,name})
   })
 
   router.post("/simulate",async(req,res)=>{
@@ -200,9 +204,12 @@ router.post("/edit_schedulemem", async (req, res) => {
   router.get("/simulate", async (req, res) => {
     {
     var simulate_detail= await flight_schedule_controller.simulate_ret(req,res);
-    res.render('simulation_display',{layout:false,simulations:simulate_detail});
+    const {totalMinutes} = await flight_schedule_controller.name_time(req,res);
+    let totalHours = (totalMinutes / 60).toFixed(2);
+    res.render('simulation_display',{layout:false,simulations:simulate_detail,totalHours});
 }
  } );
+
 
 module.exports = router
 
